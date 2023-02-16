@@ -1,2 +1,2 @@
-# ls all databases in mySQL Server
+--ls all databases in mySQL Server
 SHOW DATABASES;
