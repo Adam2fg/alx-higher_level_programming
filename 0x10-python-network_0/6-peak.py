@@ -2,28 +2,44 @@
 """Finds a peak in a list of unsorted integers"""
 
 def find_peak(list_of_integers):
+    """function that finds a peak in a list of unsorted integers.
 
-    if list_of_integers is None or len(list_of_integers) == 0:
+    Args:
+        list_of_integers (list): a list of integers
+
+    Your algorithm must have the lowest complexity.
+    Note: there may be more than one peak in the list.
+
+    The most naive solution to this is to just go through each element
+    one-by-one and see if it's qualified as a peak. This solution will take
+    O(n) time complexity at the worst case and O(1) for space complexity
+    which is super for most algorithm problem. So, here comes the tricky
+    part, solve it with O(log(n)) time complexity!
+
+    Usually Binary Search is being used in sorted array(it could also mean
+    Bitonic array, or array that's sorted in some other ways), but this
+    one is a little bit different as we can't sort the array.
+
+    In Binary Search, we always check the middle value and see if it's
+    qualified to be a peak, if not then we change the start or end pointer
+    so that we get a new middle value.
+
+    Returns:
+        int: peak(s)
+    """
+    list_ = list_of_integers
+    # if there is no list of integers return None
+    if list_ == []:
         return None
+    length = len(list_)
 
-    if len(list_of_integers) == 1:
-        return list_of_integers[0]
-
-    mid_idx = int(len(list_of_integers) / 2)
-
-    if mid_idx != len(list_of_integers) - 1:
-        if list_of_integers[mid_idx - 1] < list_of_integers[mid_idx] and\
-           list_of_integers[mid_idx + 1] < list_of_integers[mid_idx]:
-            return list_of_integers[mid_idx]
-    else:
-        if list_of_integers[mid_idx - 1] < list_of_integers[mid_idx]:
-            return list_of_integers[mid_idx]
+    start, end = 0, length - 1
+    while start < end:
+        mid = start + (end - start) // 2
+        if list_[mid] > list_[mid - 1] and list_[mid] > list_[mid + 1]:
+            return list_[mid]
+        if list_[mid - 1] > list_[mid + 1]:
+            end = mid
         else:
-            return list_of_integers[mid_idx - 1]
-
-    if list_of_integers[mid_idx - 1] > list_of_integers[mid_idx]:
-        a_list = list_of_integers[0:mid_idx]
-    else:
-        a_list = list_of_integers[mid_idx + 1:]
-
-    return find_peak(a_list)
+            start = mid + 1
+    return list_[start]
